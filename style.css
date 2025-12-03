@@ -42,11 +42,16 @@ body.light-mode {
 * { box-sizing: border-box; }
 
 body {
-    margin: 0; height: 100vh; width: 100vw;
+    margin: 0; 
+    width: 100vw;
+    /* === 核心修复：使用动态视口高度，兼容手机浏览器地址栏 === */
+    height: 100vh; /* 兼容旧浏览器 */
+    height: 100dvh; /* 现代浏览器：动态高度，排除地址栏 */
+    
     font-family: 'Inter', sans-serif;
     color: var(--text-primary);
     background-color: var(--bg-base);
-    overflow: hidden;
+    overflow: hidden; /* 禁止 Body 滚动，只让聊天区滚动 */
     transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -71,7 +76,7 @@ body {
 .glass-wrapper {
     position: relative; z-index: 10;
     width: 100%; height: 100%;
-    padding: 4vh 4vw; /* 电脑端保留悬浮边距 */
+    padding: 4vh 4vw; 
     display: flex; justify-content: center; align-items: center;
 }
 
@@ -94,7 +99,7 @@ body {
     border-right: 1px solid var(--glass-border);
     display: flex; flex-direction: column;
     transition: transform 0.3s ease;
-    z-index: 100; /* 确保侧边栏层级够高 */
+    z-index: 100; 
 }
 
 .sidebar-header { padding: 25px 20px; }
@@ -122,7 +127,7 @@ body {
 
 .main-content {
     flex: 1; display: flex; flex-direction: column; position: relative;
-    width: 100%; /* 确保在移动端占满宽度 */
+    width: 100%;
 }
 
 .header-bar {
@@ -136,7 +141,8 @@ body {
     justify-content: space-between;
     background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), var(--glass-noise-pattern);
     backdrop-filter: var(--glass-blur);
-    height: 60px; /* 固定高度，防止移动端变形 */
+    height: 60px; 
+    flex-shrink: 0; /* 防止被挤压 */
 }
 
 /* === 图标容器 === */
@@ -181,9 +187,12 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
 .status-dot { width: 8px; height: 8px; background: var(--accent-color); border-radius: 50%; box-shadow: 0 0 10px var(--accent-color); }
 
 .messages {
-    flex: 1; overflow-y: auto; padding: 20px 8%; 
+    flex: 1; 
+    overflow-y: auto; 
+    /* 启用平滑滚动 */
+    -webkit-overflow-scrolling: touch; 
+    padding: 20px 8%; 
     display: flex; flex-direction: column; gap: 28px;
-    /* 增加底部内边距，防止消息被输入框遮挡 */
     padding-bottom: 20px; 
 }
 
@@ -228,6 +237,10 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
     border-top: 1px solid var(--glass-border);
     background: linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.05)), var(--glass-noise-pattern);
     backdrop-filter: var(--glass-blur);
+    /* 防止输入框被压缩 */
+    flex-shrink: 0; 
+    /* 适配 iPhone 底部安全区域 */
+    padding-bottom: calc(20px + env(safe-area-inset-bottom)); 
 }
 .input-container {
     flex: 1; background: rgba(0,0,0,0.2);
@@ -239,6 +252,8 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
 .input-container input {
     flex: 1; padding: 10px; background: transparent; border: none;
     color: var(--text-primary); font-size: 16px; outline: none;
+    /* 修复 iOS 输入框字体放大导致布局错乱 */
+    min-width: 0; 
 }
 
 .icon-btn {
@@ -246,13 +261,15 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
     cursor: pointer; font-size: 20px; color: var(--text-secondary);
     border-radius: 50%; display: flex; align-items: center; justify-content: center;
     transition: 0.2s;
+    /* 避免图标按钮被压缩 */
+    flex-shrink: 0; 
 }
 .icon-btn:hover { background: rgba(255,255,255,0.1); color: var(--accent-color); }
 .mic-btn.recording { color: #ff5252; animation: pulse 1.5s infinite; }
 @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
 
 .dropdown-content {
-    display: none; position: absolute; bottom: 60px; right: 0;
+    display: none; position: absolute; bottom: 80px; right: 0; /* bottom 调高一点，防止被软键盘遮挡 */
     background: var(--sidebar-glass); border: 1px solid var(--glass-border);
     border-radius: 12px; padding: 8px; min-width: 160px;
     backdrop-filter: blur(20px); box-shadow: 0 10px 40px rgba(0,0,0,0.3);
@@ -284,47 +301,39 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
    响应式适配核心代码 (重点修改部分)
    ========================================================================== */
 @media (max-width: 768px) {
-    /* 1. 移除外层悬浮边距，占满全屏 */
     .glass-wrapper { padding: 0; }
-    
-    /* 2. 移除圆角和边框，更贴合移动端屏幕 */
     .app-layout { border-radius: 0; border: none; }
     
-    /* 3. 侧边栏改为抽屉式，默认隐藏在屏幕左侧 */
     .sidebar { 
         position: fixed; left: 0; top: 0; height: 100%; 
         transform: translateX(-100%); 
-        width: 80%; /* 侧边栏宽度占屏幕80% */
+        width: 80%; 
         max-width: 300px;
     }
     .sidebar.open { transform: translateX(0); }
     
-    /* 4. 显示移动端菜单按钮 */
     #mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
     
-    /* 5. 顶部 Header 调整 */
     .header-bar {
-        /* 左侧增加 Padding，防止菜单按钮遮挡文字 "Ice-Core Online" */
         padding-left: 60px; 
         padding-right: 15px;
     }
 
-    /* 6. 消息区域调整 */
     .messages { 
-        padding: 20px 15px; /* 减小两侧边距 */
-        /* 增加顶部边距，防止第一条消息太靠上 */
+        padding: 20px 15px; 
         padding-top: 10px;
     }
     
-    /* 7. 消息气泡最大宽度调整 */
-    .message { max-width: 90%; } /* 移动端气泡可以更宽一点 */
+    .message { max-width: 90%; }
 
-    /* 8. 底部输入区调整 */
+    /* === 移动端输入区域修正 === */
     .input-area {
-        padding: 15px; /* 减小输入区边距，节省空间 */
+        padding: 12px; /* 进一步减小内边距 */
         gap: 8px;
+        /* 确保底部有足够空间给 iOS 小黑条 */
+        padding-bottom: calc(12px + env(safe-area-inset-bottom));
+        background: var(--glass-panel); /* 加深背景色，防止与内容混淆 */
     }
     
-    /* 9. 隐藏部分不重要的 UI 细节（可选） */
-    .status-dot { width: 6px; height: 6px; } /* 状态点稍微变小 */
+    .status-dot { width: 6px; height: 6px; }
 }
