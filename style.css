@@ -52,7 +52,6 @@ body.light-mode {
 html, body {
     margin: 0; padding: 0;
     width: 100%; height: 100%;
-    /* 锁死滚动，防止橡皮筋效果 */
     overflow: hidden; 
     overscroll-behavior: none;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -258,7 +257,7 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
 .dropdown-item { padding: 10px; cursor: pointer; font-size: 14px; border-radius: 6px; color: var(--text-primary); }
 .dropdown-item:hover { background: rgba(255,255,255,0.1); }
 
-/* 移动端菜单按钮 (基础样式，位置在 media query 中精确控制) */
+/* 移动端菜单按钮 (位置在 media query 中控制) */
 #mobile-menu-btn {
     position: fixed; z-index: 200;
     /* 加深背景，解决透明度“太难看”的问题 */
@@ -267,7 +266,7 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
     backdrop-filter: blur(10px);
     width: 40px; height: 40px; display: none; border-radius: 8px;
     color: var(--text-primary); 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* 增加投影，提升层级感 */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 90; display: none; }
@@ -284,67 +283,56 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
    >>> 极致移动端适配 <<<
    ========================================================================== */
 @media (max-width: 768px) {
-    /* 1. 视口与背景：使用 dvh 占满屏幕，背景纯色化以解决“透明太脏”的问题 */
-    .glass-wrapper { 
-        padding: 0; width: 100%; height: 100dvh; 
-    }
+    .glass-wrapper { padding: 0; width: 100%; height: 100dvh; }
     .app-layout { 
         border-radius: 0; border: none; 
-        /* 移动端背景加深，接近不透明，提升质感 */
         background: rgba(5, 11, 20, 0.98); 
     }
     
-    /* 2. 侧边栏：抽屉式，加深背景 */
+    /* 侧边栏：解决“遮罩太高”和“重叠”的关键 */
     .sidebar { 
         position: fixed; left: 0; top: 0; bottom: 0;
         transform: translateX(-100%); 
         width: 80%; max-width: 300px;
-        background: #050b14; /* 纯色背景，不透明 */
-        padding-top: var(--safe-top); /* 避开状态栏 */
+        background: #050b14; 
+        /* 侧边栏本身不加 padding-top，由 header 来撑开 */
     }
     .sidebar.open { transform: translateX(0); }
     
-    /* 3. 菜单按钮：精确控制位置，避开刘海 */
+    /* === 核心修复：给侧边栏内的按钮留出位置 === */
+    .sidebar-header {
+        /* 计算公式：按钮顶部定位(10px + safe-top) + 按钮高度(40px) + 间距(30px) */
+        padding-top: calc(80px + var(--safe-top));
+    }
+    
+    /* 菜单按钮：精确定位 */
     #mobile-menu-btn { 
         display: flex; align-items: center; justify-content: center; 
-        /* 核心修正：按钮位置下移，避开状态栏 */
+        /* 位置跟随安全区域 */
         top: calc(10px + var(--safe-top)); 
         left: 15px;
     }
     
-    /* 4. 顶部 Header：增加高度和 Padding，避开状态栏和按钮 */
+    /* 顶部 Header：右移文字，避开左上角按钮区域 */
     .header-bar {
-        /* 高度 = 内容高度 + 顶部安全距离 */
         height: calc(60px + var(--safe-top)); 
-        padding-top: var(--safe-top); /* 让内容往下推 */
-        
-        padding-left: 70px; /* 左侧留出更多空间给菜单按钮，不重叠 */
+        padding-top: var(--safe-top); 
+        padding-left: 70px; /* 左侧留白 */
         padding-right: 15px;
-        
-        /* 加深背景，解决“遮罩不好看”的问题 */
         background: rgba(5, 11, 20, 0.95);
         border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
-    /* 5. 消息区域 */
-    .messages { 
-        padding: 10px 15px; 
-    }
+    .messages { padding: 10px 15px; }
     .message { max-width: 92%; }
 
-    /* 6. 底部输入框：扎实背景，防遮挡 */
     .input-area {
-        padding: 10px 12px;
-        gap: 8px;
+        padding: 10px 12px; gap: 8px;
         padding-bottom: calc(10px + var(--safe-bottom)); 
-        /* 几乎不透明的深色背景，看起来更专业 */
         background: #0a0f1e; 
         border-top: 1px solid rgba(255,255,255,0.05);
     }
     
-    .input-container input {
-        font-size: 16px !important; 
-    }
-    
+    .input-container input { font-size: 16px !important; }
     .status-dot { width: 6px; height: 6px; }
 }
