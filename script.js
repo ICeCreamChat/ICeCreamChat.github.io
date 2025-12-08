@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 // ==========================================
-// 1. 配置 (锁定 DeepSeek)
+// 1. 配置 (锁定 DeepSeek) 
 // ==========================================
 const API_CONFIG = {
     deepseek: {
