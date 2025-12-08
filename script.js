@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 
 // ==========================================
-// 1. 配置 (锁定 DeepSeek) 
+// 1. 配置 (指向 Vercel 后端代理)
 // ==========================================
 const API_CONFIG = {
     deepseek: {
-        key: 'sk-t741Aph1aaXnU9ZUhGV1NjlYbNBGRSuLw23AYgaLGTqmRRz5',
-        url: 'https://edge.tb.api.mkeai.com/v1/chat/completions',
+        // 前端不再需要 Key，Key 由后端 /api/chat 自动注入
+        url: '/api/chat', 
         modelName: 'deepseek-chat'
     }
 };
@@ -34,6 +34,8 @@ let currentSessionId = localStorage.getItem('currentSessionId') || null;
 // 3D 场景变量
 let scene, camera, renderer, particles;
 let clock = new THREE.Clock();
+let animationFrameId = null;
+let isPageVisible = true;
 
 // ==========================================
 // 2. 初始化
@@ -44,16 +46,16 @@ document.addEventListener('DOMContentLoaded', () => {
     checkBeijingTime();
     setInterval(checkBeijingTime, 60000);
 
-    // 初始化显示
-    updateModelLabel(); // 锁定显示 DeepSeek
+    updateModelLabel(); 
     
     initVoiceFeature();
     initChatSystem(); 
     initCustomCursor(); 
     
     initMathParticleScene();
+    initPerformanceOptimization();
     
-    // 🔥 初始化 AI 幽灵补全功能
+    // 初始化 AI 幽灵补全
     initGhostInputFeature();
     
     if(window.marked) window.marked.setOptions({ breaks: true, gfm: true });
@@ -111,11 +113,25 @@ function checkBeijingTime() {
 function toggleTheme() {
     isManualTheme = true;
     document.body.classList.toggle('light-mode');
+    document.getElementById('dropdownMenu').classList.remove('show');
 }
 
 // ==========================================
-// 5. 数学符号粒子引擎
+// 5. 数学符号粒子引擎 (含性能优化)
 // ==========================================
+function initPerformanceOptimization() {
+    document.addEventListener('visibilitychange', () => {
+        isPageVisible = !document.hidden;
+        if (isPageVisible) {
+            clock.start();
+            animate();
+        } else {
+            clock.stop();
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        }
+    });
+}
+
 function initMathParticleScene() {
     const container = document.getElementById('math-canvas-container');
     if (!container) return;
@@ -129,7 +145,7 @@ function initMathParticleScene() {
 
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
     const symbols = ['∑', '∫', 'π', 'e', '0', '1', 'sin', 'cos', '∞', '√', 'tan', 'log'];
@@ -151,7 +167,7 @@ function initMathParticleScene() {
     });
 
     particles = new THREE.Group();
-    const particleCount = 3000; 
+    const particleCount = window.innerWidth < 768 ? 1500 : 3000;
 
     for (let i = 0; i < particleCount; i++) {
         const mat = materials[Math.floor(Math.random() * materials.length)].clone();
@@ -176,17 +192,23 @@ function initMathParticleScene() {
     }
     scene.add(particles);
 
+    let resizeTimeout;
     window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }, 100);
     });
 
     animate();
 }
 
 function animate() {
-    requestAnimationFrame(animate);
+    if (!isPageVisible) return;
+
+    animationFrameId = requestAnimationFrame(animate);
     const time = clock.getElapsedTime();
 
     particles.children.forEach(sprite => {
@@ -219,7 +241,7 @@ function animate() {
 }
 
 // ==========================================
-// 6. 记忆与聊天 (DeepSeek 核心逻辑)
+// 6. 记忆与聊天 (对接后端代理)
 // ==========================================
 function initChatSystem() {
     renderHistoryList();
@@ -269,9 +291,11 @@ function loadSession(id) {
 }
 
 function closeSidebarMobile() {
-    if (window.innerWidth <= 768) {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebar-overlay').classList.remove('active');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    if (window.innerWidth <= 768 && sidebar && overlay) {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
     }
 }
 
@@ -324,6 +348,7 @@ function clearAllHistory() {
         chatSessions = [];
         startNewChat();
         alert('系统记忆已重置。');
+        document.getElementById('dropdownMenu').classList.remove('show');
     } 
 }
 
@@ -336,12 +361,10 @@ function sendMessage() {
     const message = input.value.trim();
     if (!message) return;
     
-    // 发送后清空输入框并重置幽灵建议
     displayMessage('user', message, true);
     input.value = '';
     input.placeholder = "输入指令...";
     
-    // 手动触发一次建议更新（清空幽灵文字）
     if(window.updateGhostSuggestion) window.updateGhostSuggestion("");
     
     const loading = document.getElementById('loading');
@@ -373,17 +396,25 @@ function callDeepSeek(loadingElement) {
         temperature: 0.7
     };
     
+    // 🔥 修改：请求发送到本地 /api/chat，不带 Key
     fetch(config.url, { 
         method: 'POST', 
         headers: { 
-            'Content-Type': 'application/json', 
-            'Authorization': `Bearer ${config.key}` 
+            'Content-Type': 'application/json' 
+            // 注意：这里删除了 Authorization Header，因为在后端加
         }, 
         body: JSON.stringify(payload) 
     })
     .then(res => res.json())
     .then(data => {
         loadingElement.style.display = 'none';
+        
+        if (data.error) {
+            console.error(data.error);
+            displayMessage('bot', `System Error: ${data.error || '后端连接异常'}`, false);
+            return;
+        }
+
         if (data.choices && data.choices.length > 0) {
             const reply = data.choices[0].message.content;
             displayMessage('bot', reply, true);
@@ -488,7 +519,6 @@ function initVoiceFeature() {
             const input = document.getElementById('chat-input'); 
             input.value = input.value ? input.value + finalTranscript : finalTranscript;
             
-            // 触发一次幽灵建议更新
             updateGhostSuggestion(input.value);
             
             input.placeholder = "语音识别中... 1.5秒后自动发送";
@@ -522,9 +552,11 @@ function bindEvents() {
     document.getElementById('send-btn').addEventListener('click', sendMessage);
     document.getElementById('mic-btn').addEventListener('click', toggleVoice);
     document.getElementById('more-btn').addEventListener('click', toggleDropdown);
+    
     document.getElementById('btn-tts').addEventListener('click', toggleTTS);
     document.getElementById('btn-theme').addEventListener('click', toggleTheme);
     document.getElementById('btn-clear').addEventListener('click', clearAllHistory);
+    
     document.getElementById('new-chat-btn').addEventListener('click', startNewChat);
     document.getElementById('mobile-menu-btn').addEventListener('click', () => { document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebar-overlay').classList.add('active'); });
     document.getElementById('sidebar-overlay').addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('active'); });
@@ -534,13 +566,11 @@ function bindEvents() {
 // ==========================================
 // 9. AI 智能联想补全系统 (Ghost Autocomplete)
 // ==========================================
-// 核心修复：位置精准定位 + AI 驱动 + 速度优化
-
-let ghostInterval = null;     // 轮播定时器
-let ghostDebounceTimer = null; // API 请求防抖定时器
-let currentSuggestions = [];   // 当前建议列表
-let suggestionIndex = 0;       // 当前显示的索引
-let currentGhostSuffix = "";   // 当前显示的后缀
+let ghostInterval = null;     
+let ghostDebounceTimer = null; 
+let currentSuggestions = [];   
+let suggestionIndex = 0;       
+let currentGhostSuffix = "";   
 
 function initGhostInputFeature() {
     const input = document.getElementById('chat-input');
@@ -548,13 +578,11 @@ function initGhostInputFeature() {
     
     if (!input || !ghost) return;
 
-    // 监听输入
     input.addEventListener('input', (e) => {
         const val = e.target.value;
         updateGhostSuggestion(val);
     });
 
-    // 监听按键
     input.addEventListener('keydown', (e) => {
         if ((e.key === 'Tab' || e.key === 'ArrowRight') && currentGhostSuffix) {
             e.preventDefault(); 
@@ -562,25 +590,16 @@ function initGhostInputFeature() {
         }
     });
     
-    // 失去焦点时停止轮播
-    input.addEventListener('blur', () => {
-        clearInterval(ghostInterval);
-    });
-    
-    // 获得焦点时恢复
-    input.addEventListener('focus', () => {
-        updateGhostSuggestion(input.value);
-    });
+    input.addEventListener('blur', () => { clearInterval(ghostInterval); });
+    input.addEventListener('focus', () => { updateGhostSuggestion(input.value); });
 }
 
-// 全局暴露
 window.updateGhostSuggestion = updateGhostSuggestion;
 
 function updateGhostSuggestion(inputValue) {
     const ghost = document.getElementById('ghost-input');
     if(!ghost) return;
 
-    // 清理状态
     clearInterval(ghostInterval);
     clearTimeout(ghostDebounceTimer);
     
@@ -590,22 +609,22 @@ function updateGhostSuggestion(inputValue) {
     
     if (!inputValue || inputValue.trim() === "") return;
 
-    // 防抖 0.6s
     ghostDebounceTimer = setTimeout(() => {
         fetchAISuggestions(inputValue);
     }, 600);
 }
 
-// AI 获取联想
+// 修改：Ghost 功能也通过后端代理
 async function fetchAISuggestions(inputValue) {
     const config = API_CONFIG.deepseek;
     
     try {
+        // 请求发给本地 /api/chat，自动带上 Key
         const response = await fetch(config.url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${config.key}`
+                'Content-Type': 'application/json'
+                // Authorization removed
             },
             body: JSON.stringify({
                 model: config.modelName,
@@ -647,7 +666,6 @@ async function fetchAISuggestions(inputValue) {
                 showGhost(inputValue);
                 
                 if (currentSuggestions.length > 1) {
-                    // 修改：轮播间隔改为 2000ms
                     ghostInterval = setInterval(() => {
                         cycleNextSuggestion(inputValue);
                     }, 2000); 
@@ -659,7 +677,6 @@ async function fetchAISuggestions(inputValue) {
     }
 }
 
-// 核心修复：精准定位
 function showGhost(inputValue) {
     const ghost = document.getElementById('ghost-input');
     const input = document.getElementById('chat-input');
@@ -668,18 +685,12 @@ function showGhost(inputValue) {
     const suffix = fullSuggestion.substring(inputValue.length);
     currentGhostSuffix = suffix;
     
-    // 1. 获取输入框的计算样式
     const style = window.getComputedStyle(input);
-    // 2. 构建准确的 font 字符串
     const font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-    // 3. 计算文字像素宽度
     const textWidth = getTextWidth(inputValue, font);
-    // 4. 获取左内边距
     const paddingLeft = parseFloat(style.paddingLeft) || 10;
     
-    // 设置内容
     ghost.textContent = suffix;
-    // 5. 绝对定位：paddingLeft + 文字宽度
     ghost.style.left = (paddingLeft + textWidth) + 'px'; 
     
     ghost.classList.remove('ghost-cycle-anim');
@@ -709,7 +720,6 @@ function applySuggestion() {
     }
 }
 
-// 辅助工具：Canvas 测量文字宽度
 function getTextWidth(text, font) {
     const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
     const context = canvas.getContext("2d");
