@@ -15,7 +15,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 3. 后端 API 接口 (隐藏 Key 的核心逻辑)
 app.post('/api/chat', async (req, res) => {
     try {
-        const API_KEY = process.env.DEEPSEEK_KEY; // 从环境变量读取 Key
+        // const API_KEY = process.env.DEEPSEEK_KEY; // 从环境变量读取 Key
+        const API_KEY = "sk-t741Aph1aaXnU9ZUhGV1NjlYbNBGRSuLw23AYgaLGTqmRRz5";
         if (!API_KEY) {
             throw new Error('服务器未配置 API Key');
         }
