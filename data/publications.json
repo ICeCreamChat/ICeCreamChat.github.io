@@ -1,0 +1,124 @@
+{
+  "updated": "2026-10-13",
+  "source": "https://orcid.org/0009-0009-6216-2201",
+  "items": [
+    {
+      "title": "Multi-stable transitions of Turing patterns induced by disturbances and the evolution law of configurational entropy",
+      "authors": [
+        "Bin Xu",
+        "Qitong Jia",
+        "Jingying Wang",
+        "Jian Gao"
+      ],
+      "journal": "Chaos, Solitons & Fractals",
+      "year": 2026,
+      "sortDate": "2026-12-01",
+      "volume": "213",
+      "issue": "",
+      "article": "119317",
+      "doi": "10.1016/j.chaos.2026.119317",
+      "orcidPutCode": 229722283
+    },
+    {
+      "title": "Control of the composite spiral waves: Noise can alter the structure of composite spiral waves and facilitate transitions between composite and classic spiral waves",
+      "authors": [
+        "Jian Gao",
+        "Bin Xu",
+        "Cong Liu",
+        "Chuansheng Shen"
+      ],
+      "journal": "Chaos, Solitons & Fractals",
+      "year": 2026,
+      "sortDate": "2026-07-01",
+      "volume": "208",
+      "issue": "",
+      "article": "118143",
+      "doi": "10.1016/j.chaos.2026.118143",
+      "orcidPutCode": 206844189
+    },
+    {
+      "title": "Universality of population distribution patterns near the Neimark-Sacker bifurcation in a predator-pest model of warm temperate deciduous forests",
+      "authors": [
+        "Bin Xu",
+        "Yingshan Guo",
+        "Jian Gao",
+        "Yongshang Long",
+        "Miao Feng",
+        "Chuansheng Shen"
+      ],
+      "journal": "Communications in Nonlinear Science and Numerical Simulation",
+      "year": 2025,
+      "sortDate": "2025-11-01",
+      "volume": "150",
+      "issue": "",
+      "article": "108961",
+      "doi": "10.1016/j.cnsns.2025.108961",
+      "orcidPutCode": 184973624
+    },
+    {
+      "title": "Programmable structural control of a type of bistable spiral waves via engineered pulses",
+      "authors": [
+        "Jian Gao",
+        "Bin Xu",
+        "Chuansheng Shen"
+      ],
+      "journal": "Physical Review E",
+      "year": 2025,
+      "sortDate": "2025-10-06",
+      "volume": "112",
+      "issue": "4",
+      "article": "044205",
+      "doi": "10.1103/xns2-36vg",
+      "orcidPutCode": 193910737
+    },
+    {
+      "title": "Population dynamics of biological synchronous reproduction and the effects of synchronous reproductive cycle on population dynamics",
+      "authors": [
+        "Jian Gao",
+        "Bin Xu",
+        "Yaqi Zheng",
+        "Chuansheng Shen"
+      ],
+      "journal": "Chaos, Solitons & Fractals",
+      "year": 2025,
+      "sortDate": "2025-08-01",
+      "volume": "197",
+      "issue": "",
+      "article": "116438",
+      "doi": "10.1016/j.chaos.2025.116438",
+      "orcidPutCode": 182845314
+    },
+    {
+      "title": "Period-doubled spiral waves without line defects in oscillatory systems",
+      "authors": [
+        "Jian Gao",
+        "Bin Xu",
+        "Chuansheng Shen"
+      ],
+      "journal": "Physical Review E",
+      "year": 2025,
+      "sortDate": "2025-07-02",
+      "volume": "112",
+      "issue": "1",
+      "article": "014203",
+      "doi": "10.1103/26pt-kz9b",
+      "orcidPutCode": 187143750
+    },
+    {
+      "title": "Proportional relations between the wave number and amplitude of spiral waves near Neimark-Sacker bifurcations",
+      "authors": [
+        "Bin Xu",
+        "Jian Gao",
+        "Chuansheng Shen"
+      ],
+      "journal": "Europhysics Letters",
+      "year": 2024,
+      "sortDate": "2024-08-01",
+      "volume": "147",
+      "issue": "3",
+      "article": "33001",
+      "doi": "10.1209/0295-5075/ad5eb8",
+      "orcidPutCode": 183093415
+    }
+  ]
+}

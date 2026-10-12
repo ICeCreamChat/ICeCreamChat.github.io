@@ -1,14 +1,13 @@
 {
-  "name": "icecream-chat",
-  "version": "1.0.0",
-  "main": "server.js",
+  "name": "bin-xu-homepage",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "build": "node scripts/build.mjs",
+    "sync:publications": "node scripts/sync-publications.mjs",
+    "sync:projects": "node scripts/sync-projects.mjs",
+    "preview": "node scripts/preview.mjs"
   },
-  "dependencies": {
-    "express": "^4.18.2"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  }
+  "engines": { "node": ">=22" }
 }

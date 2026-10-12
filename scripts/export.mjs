@@ -1,0 +1,13 @@
+import { cp, mkdir, writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+const root = new URL('../', import.meta.url);
+const output = new URL('_site/', root);
+await mkdir(output, { recursive: true });
+await cp(new URL('index.html', root), new URL('index.html', output));
+await cp(new URL('assets/', root), new URL('assets/', output), { recursive: true });
+await mkdir(new URL('data/', output), { recursive: true });
+await cp(new URL('data/publications.bib', root), new URL('data/publications.bib', output));
+await writeFile(new URL('.nojekyll', output), '');
+await writeFile(new URL('robots.txt', output), 'User-agent: *\nAllow: /\nSitemap: https://icecreamchat.github.io/sitemap.xml\n');
+await writeFile(new URL('sitemap.xml', output), '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://icecreamchat.github.io/</loc></url></urlset>\n');
+console.log(`Exported public site to ${fileURLToPath(output)}`);

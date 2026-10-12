@@ -1,0 +1,87 @@
+{
+  "updated": "2026-10-13",
+  "source": "https://github.com/ICeCreamChat",
+  "items": [
+    {
+      "repo": "ICeCreamShouter",
+      "name": "ICeCream Shouter",
+      "category": "课堂协作",
+      "description": "面向学校的远程喊话与班级通知系统。教师可发送文字通知和原声语音，教室端提供分级提醒，支持班级授权与语音留言。",
+      "technologies": [
+        "Python",
+        "WebSocket",
+        ".NET / Avalonia"
+      ],
+      "pushedAt": "2026-09-23T00:31:37Z",
+      "featured": true,
+      "visual": "classroom"
+    },
+    {
+      "repo": "ICeCream",
+      "name": "ICeCream",
+      "category": "数学教学工作台",
+      "description": "面向学习与教学的 AI 工作台，将题目解析、Manim 数学动画、GeoGebra 动态几何和座位规划整合在同一个浏览器入口中。",
+      "technologies": [
+        "JavaScript",
+        "Python",
+        "Manim",
+        "GeoGebra"
+      ],
+      "pushedAt": "2026-08-13T08:21:56Z",
+      "featured": true,
+      "visual": "geometry"
+    },
+    {
+      "repo": "MathSolver",
+      "name": "MathSolver",
+      "category": "多模态解题",
+      "description": "将图片中的视觉理解、OCR 与数学推理解耦，结合图表裁剪和公式识别，处理包含几何图形、函数图表的中文数学题。",
+      "technologies": [
+        "JavaScript",
+        "Node.js",
+        "视觉模型"
+      ],
+      "pushedAt": "2026-02-02T11:58:50Z",
+      "featured": false
+    },
+    {
+      "repo": "ICeCream_Chat",
+      "name": "ICeCream Chat",
+      "category": "数学与逻辑对话",
+      "description": "基于 DeepSeek 的数学聊天界面，提供 LaTeX 公式显示、输入联想补全、语音交互与 Three.js 数学粒子场景。",
+      "technologies": [
+        "JavaScript",
+        "Three.js",
+        "KaTeX"
+      ],
+      "pushedAt": "2026-01-26T01:46:17Z",
+      "featured": false
+    },
+    {
+      "repo": "ICeCream_Core",
+      "name": "ICeCream Core",
+      "category": "对话与可视化集成",
+      "description": "连接门户、AI 对话与 MathSpace 动画工作室，配合 Manim 渲染服务和代码编辑器，探索数学可视化的一体化工作流。",
+      "technologies": [
+        "Node.js",
+        "FastAPI",
+        "Manim"
+      ],
+      "pushedAt": "2026-01-26T01:32:15Z",
+      "featured": false
+    },
+    {
+      "repo": "MathSpace_Version",
+      "name": "MathSpace",
+      "category": "数学动画生成",
+      "description": "将自然语言描述转换为 Manim 数学动画，提供渲染进度反馈和缓存，帮助把抽象概念转成可以观看的图景。",
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "Manim"
+      ],
+      "pushedAt": "2026-01-25T05:51:03Z",
+      "featured": false
+    }
+  ]
+}

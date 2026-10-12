@@ -1,0 +1,27 @@
+{
+  "name": "许斌",
+  "englishName": "Bin Xu",
+  "role": "高中数学教师",
+  "qualification": "数学硕士",
+  "bio": "目前从事高中数学教学，持续开展非线性动力学相关研究，关注螺旋波、分岔、图灵斑图与种群动力学，也开发面向数学学习和课堂实践的工具。",
+  "email": "icexu330@126.com",
+  "github": "https://github.com/ICeCreamChat",
+  "orcid": "https://orcid.org/0009-0009-6216-2201",
+  "site": "https://icecreamchat.github.io/",
+  "education": [
+    { "start": 2023, "end": 2026, "degree": "硕士", "field": "数学", "school": "安庆师范大学", "status": "已毕业" },
+    { "start": 2018, "end": 2022, "degree": "学士", "field": "数学与应用数学", "school": "安庆师范大学", "status": "已毕业" }
+  ],
+  "honors": [
+    { "year": 2026, "title": "研究生省级优秀毕业生", "level": "省级荣誉" },
+    { "year": 2025, "title": "研究生国家奖学金", "level": "国家级荣誉" },
+    { "year": 2025, "title": "第五届长三角高校数学建模竞赛研究生组", "level": "特等提名奖" },
+    { "year": 2025, "title": "第十五届全国大学生市场调查与分析大赛", "level": "国家三等奖" },
+    { "year": 2025, "title": "全国大学生市场调查与分析大赛安徽赛区", "level": "二等奖" },
+    { "year": 2024, "title": "“华为杯”第二十一届中国研究生数学建模竞赛", "level": "国家三等奖" },
+    { "year": 2024, "title": "第四届长三角高校数学建模竞赛研究生组", "level": "二等奖" }
+  ],
+  "patents": [
+    { "title": "通过图灵斑图结构检测数码相机 CCD 性能的方法", "authors": ["高见", "许斌", "申传胜"], "status": "已公开" }
+  ]
+}
