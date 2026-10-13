@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b172b">
+  <meta name="theme-color" content="#f7f9fc">
   <meta name="description" content="{{description}}">
   <meta name="author" content="许斌 / Bin Xu">
   <meta property="og:type" content="website">
@@ -15,8 +15,8 @@
   <link rel="canonical" href="https://icecreamchat.github.io/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/space-grotesk-regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="assets/css/site.css">
-  <script type="module" src="assets/js/site.js"></script>
+  <link rel="stylesheet" href="assets/css/site.css?v=light-dynamics">
+  <script type="module" src="assets/js/site.js?v=light-dynamics"></script>
   <script type="application/ld+json">{{structuredData}}</script>
 </head>
 <body>
@@ -25,7 +25,7 @@
     <div class="shell header-inner">
       <a class="wordmark" href="#top" aria-label="许斌主页">
         <svg aria-hidden="true" viewBox="0 0 40 40"><path d="M20 20c0-3-4-4-5-1-2 5 5 8 9 4 6-6-2-17-11-11C1 20 12 37 25 31c13-6 13-23 1-27"/></svg>
-        <span>ICeCreamChat<span class="wordmark-name">许斌</span></span>
+        <span>许斌<span class="wordmark-name">ICeCreamChat</span></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" hidden><span>菜单</span><span class="menu-lines" aria-hidden="true"></span></button>
       <nav id="site-nav" class="site-nav" aria-label="主导航">
@@ -37,34 +37,27 @@
   <main id="main">
     <section class="hero shell" id="top" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <div class="identity-line"><span class="identity-dot" aria-hidden="true"></span>高中数学教师<span class="identity-divider" aria-hidden="true"></span>数学硕士</div>
-        <h1 id="hero-title">许斌<span>Bin Xu</span></h1>
-        <p class="hero-statement">数学教学与<br>非线性动力学研究</p>
+        <div class="profile-heading">
+          <img class="profile-portrait" src="assets/img/portrait.png" alt="许斌的个人照片" width="140" height="170">
+          <div><h1 id="hero-title">许斌<span lang="en">Bin Xu</span></h1><p class="identity-line">高中数学教师 / 数学硕士</p></div>
+        </div>
         <p class="hero-intro">{{bio}}</p>
-        <div class="hero-actions"><a class="button button-primary" href="#projects">查看项目 <svg aria-hidden="true" viewBox="0 0 18 18"><path d="M4 5h10M14 5v10M14 5 4 15"/></svg></a><a class="button button-outline" href="#publications">阅读论文</a></div>
+        <div class="hero-links"><a href="#projects">开源项目</a><a href="#publications">论文目录</a><a href="mailto:icexu330@126.com">电子邮箱</a></div>
         <a class="hero-orcid" href="https://orcid.org/0009-0009-6216-2201" target="_blank" rel="noopener noreferrer"><span class="orcid-mark" aria-hidden="true">iD</span>0009-0009-6216-2201</a>
       </div>
-      <figure class="wave-figure">
-        <div class="wave-heading"><span>螺旋波的数学图景</span><span class="wave-heading-en" lang="en">Spiral wave</span></div>
-        <div class="wave-stage">
-          <img class="wave-fallback" src="assets/img/wave-preview.svg" width="480" height="480" alt="青色和琥珀色螺旋波相位示意图">
-          <canvas id="wave-canvas" width="320" height="320" role="img" aria-label="可调节波数和旋臂数的螺旋波相位示意图"></canvas>
-          <span class="axis axis-x" aria-hidden="true">x</span><span class="axis axis-y" aria-hidden="true">y</span>
-          <div class="wave-legend"><span><i class="legend-cyan"></i>正相位</span><span><i class="legend-amber"></i>负相位</span></div>
-        </div>
-        <div class="wave-interaction" hidden>
-          <label class="wave-range" for="wave-number">波数 <span lang="en">k</span><output id="wave-number-value" for="wave-number">5.0</output><input id="wave-number" type="range" min="2" max="9" step="0.1" value="5" aria-label="波数 k"></label>
-          <div class="wave-buttons"><button id="wave-arms" type="button" aria-pressed="false">双旋臂</button><button id="wave-motion" type="button" aria-pressed="false">播放</button></div>
-        </div>
-        <figcaption><span class="wave-equation" lang="en">u(r, θ, t) = sin(2πkr + mθ − ωt)</span><span class="wave-note">相位场示意，可调节参数观察结构变化。</span></figcaption>
+      <figure class="dynamics-figure" aria-label="数学模型动态示意">
+        <div class="dynamics-tabs" role="group" aria-label="选择模型动画" hidden><button type="button" data-dynamics="spiral" aria-pressed="true">螺旋波</button><button type="button" data-dynamics="turing" aria-pressed="false">图灵斑图</button><button type="button" data-dynamics="collective" aria-pressed="false">集群行为</button></div>
+        <video id="dynamics-video" class="dynamics-video" width="480" height="480" controls loop playsinline preload="none" poster="assets/img/spiral-wave-poster.png" aria-label="螺旋波模型动画"><source src="assets/media/spiral-wave.mp4" type="video/mp4">你的浏览器不支持视频，可<a href="assets/media/spiral-wave.mp4">打开螺旋波动画</a>。</video>
+        <figcaption><span class="dynamics-equation" lang="en">u(r, θ, t) = sin(2πkr + θ − ωt)</span><span class="dynamics-note">解析相位场示意，观察螺旋结构随时间旋转。</span></figcaption>
+        <noscript><p class="dynamics-fallback-links"><a href="assets/media/turing-pattern.mp4">观看图灵斑图</a><a href="assets/media/collective-motion.mp4">观看集群行为</a></p></noscript>
       </figure>
     </section>
 
     <section class="practice-section section shell" id="practice" aria-labelledby="practice-title">
-      <div class="section-heading"><h2 id="practice-title">教学与研究</h2><p>立足高中课堂，<br>持续探索复杂系统中的数学问题。</p></div>
+      <div class="section-heading"><h2 id="practice-title">教学与研究</h2></div>
       <div class="practice-columns">
-        <article class="practice-item"><svg class="practice-icon" aria-hidden="true" viewBox="0 0 80 56"><path class="diagram-grid" d="M4 44h72M18 4v48"/><path d="M24 37Q44-25 69 37"/><circle cx="45" cy="14" r="3"/></svg><div><h3>高中数学教学</h3><p>从概念理解到逻辑推演，在课堂中讲清数学，也探索 AI 与动态可视化在教学中的应用。</p></div></article>
-        <article class="practice-item"><svg class="practice-icon" aria-hidden="true" viewBox="0 0 80 56"><path class="diagram-grid" d="M4 44h72M18 4v48"/><path d="M20 37Q32 36 42 27M42 27Q52 14 70 11M42 27Q53 39 70 41"/><circle cx="42" cy="27" r="3"/></svg><div><h3>非线性动力学研究</h3><p>延续硕士阶段的研究，关注螺旋波及其控制、分岔附近的斑图结构，以及种群动力学。</p></div></article>
+        <article class="practice-item"><h3>高中数学教学</h3><p>从事高中数学教学，探索动态几何、数学动画与 AI 工具在教学中的应用，也开发题目解析和课堂协作工具。</p></article>
+        <article class="practice-item"><h3>非线性动力学研究</h3><p>继续硕士阶段的研究，关注螺旋波及其控制、分岔附近的斑图结构，以及种群动力学。</p></article>
       </div>
     </section>
 
@@ -87,7 +80,7 @@
     <section class="record-section section" id="record" aria-labelledby="record-title">
       <div class="shell">
         <div class="section-heading"><h2 id="record-title">荣誉与教育经历</h2><p>按年份由新到旧排列。</p></div>
-        <div class="record-grid"><div class="honors-record"><h3 class="record-heading">荣誉与奖项</h3>{{honors}}</div><div class="about-record"><div class="about-identity"><img src="assets/img/portrait.png" alt="许斌的个人照片" width="140" height="170" loading="lazy"><div><h3>许斌<span lang="en">Bin Xu</span></h3><p>高中数学教师<br>数学硕士</p></div></div><h3 class="record-heading">教育经历</h3>{{education}}<p class="about-note">硕士毕业后，从事高中数学教学，继续开展原有研究方向的工作。</p></div></div>
+        <div class="record-grid"><div class="honors-record"><h3 class="record-heading">荣誉与奖项</h3>{{honors}}</div><div class="about-record"><h3 class="record-heading">教育经历</h3>{{education}}<p class="about-note">硕士毕业后，从事高中数学教学，继续开展原有研究方向的工作。</p></div></div>
       </div>
     </section>
 

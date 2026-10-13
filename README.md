@@ -17,7 +17,15 @@ ORCID：https://orcid.org/0009-0009-6216-2201
 - `data/projects.json`：原创项目的介绍、技术和最近提交日期。GitHub 个人资料仓库、当前主页仓库及 Fork 项目不作为原创工具展示；完整仓库列表可从页面访问。
 - `templates/index.html`：页面结构。
 - `assets/css/site.css`：视觉样式。
-- `assets/js/wave.js`：螺旋波相位示意，使用解析式而非论文数值结果。
+- `assets/js/dynamics.js`：切换螺旋波、图灵斑图与集群行为的模型动画。默认显示静态预览，点击视频控件播放。
+
+页面采用浅色背景、个人照片和简洁的项目目录。三段动画是模型示意，不作为论文数值结果展示：螺旋波使用解析相位场，图灵斑图使用 Schnakenberg 反应扩散模型，集群行为使用 Vicsek 模型。MP4 与预览图直接随站点发布，不依赖在线计算服务。
+
+重新生成动画需要 Python、NumPy、Pillow 和 FFmpeg：
+
+```sh
+python scripts/render-dynamics.py
+```
 
 使用 Node.js 22 或更新版本，不需要安装 npm 依赖：
 

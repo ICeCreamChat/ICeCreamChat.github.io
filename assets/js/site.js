@@ -1,4 +1,4 @@
-import { initWave } from './wave.js';
+import { initDynamics } from './dynamics.js';
 
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#site-nav');
@@ -78,4 +78,4 @@ if (yearElement) {
   const year = new Intl.DateTimeFormat('en', { year: 'numeric', timeZone: 'Asia/Shanghai' }).format(new Date());
   yearElement.firstElementChild.textContent = `© ${year} 许斌 / Bin Xu`;
 }
-initWave();
+initDynamics();
