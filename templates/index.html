@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f9fc">
+  <meta name="theme-color" content="#f6f8fa">
   <meta name="description" content="{{description}}">
   <meta name="author" content="许斌 / Bin Xu">
   <meta property="og:type" content="website">
@@ -15,8 +15,9 @@
   <link rel="canonical" href="https://icecreamchat.github.io/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/space-grotesk-regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="assets/css/site.css?v=light-dynamics">
-  <script type="module" src="assets/js/site.js?v=light-dynamics"></script>
+  <script src="assets/js/theme-init.js?v=interactive-lab"></script>
+  <link rel="stylesheet" href="assets/css/site.css?v=interactive-lab">
+  <script type="module" src="assets/js/site.js?v=interactive-lab"></script>
   <script type="application/ld+json">{{structuredData}}</script>
 </head>
 <body>
@@ -27,11 +28,13 @@
         <svg aria-hidden="true" viewBox="0 0 40 40"><path d="M20 20c0-3-4-4-5-1-2 5 5 8 9 4 6-6-2-17-11-11C1 20 12 37 25 31c13-6 13-23 1-27"/></svg>
         <span>许斌<span class="wordmark-name">ICeCreamChat</span></span>
       </a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" hidden><span>菜单</span><span class="menu-lines" aria-hidden="true"></span></button>
       <nav id="site-nav" class="site-nav" aria-label="主导航">
-        <a href="#practice">教学与研究</a><a href="#projects">项目</a><a href="#publications">论文</a><a href="#record">经历</a><a href="#contact">联系</a>
-        <a class="nav-github" href="https://github.com/ICeCreamChat" target="_blank" rel="noopener noreferrer">GitHub <svg aria-hidden="true" viewBox="0 0 16 16"><path d="M4 12 12 4M4 4h8v8"/></svg></a>
+        <a href="#experiments">数学实验</a><a href="#practice">教学与研究</a><a href="#projects">项目</a><a href="#publications">论文</a><a href="#record">经历</a><a href="#contact">联系</a>
       </nav>
+      <div class="header-actions">
+        <label class="theme-control" hidden>外观<select id="theme-mode" aria-label="外观主题"><option value="light">浅色</option><option value="dark">深色</option><option value="system">跟随系统</option></select></label>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" hidden><span>菜单</span><span class="menu-lines" aria-hidden="true"></span></button>
+      </div>
     </div>
   </header>
   <main id="main">
@@ -41,16 +44,55 @@
           <img class="profile-portrait" src="assets/img/portrait.png" alt="许斌的个人照片" width="140" height="170">
           <div><h1 id="hero-title">许斌<span lang="en">Bin Xu</span></h1><p class="identity-line">高中数学教师 / 数学硕士</p></div>
         </div>
-        <p class="hero-intro">{{bio}}</p>
-        <div class="hero-links"><a href="#projects">开源项目</a><a href="#publications">论文目录</a><a href="mailto:icexu330@126.com">电子邮箱</a></div>
-        <a class="hero-orcid" href="https://orcid.org/0009-0009-6216-2201" target="_blank" rel="noopener noreferrer"><span class="orcid-mark" aria-hidden="true">iD</span>0009-0009-6216-2201</a>
+        <div class="profile-summary">
+          <p class="hero-intro">{{bio}}</p>
+          <div class="hero-links"><a href="https://github.com/ICeCreamChat" target="_blank" rel="noopener noreferrer">GitHub / ICeCreamChat</a><a href="mailto:icexu330@126.com">电子邮箱</a></div>
+          <a class="hero-orcid" href="https://orcid.org/0009-0009-6216-2201" target="_blank" rel="noopener noreferrer"><span class="orcid-mark" aria-hidden="true">iD</span>0009-0009-6216-2201</a>
+        </div>
       </div>
-      <figure class="dynamics-figure" aria-label="数学模型动态示意">
-        <div class="dynamics-tabs" role="group" aria-label="选择模型动画" hidden><button type="button" data-dynamics="spiral" aria-pressed="true">螺旋波</button><button type="button" data-dynamics="turing" aria-pressed="false">图灵斑图</button><button type="button" data-dynamics="collective" aria-pressed="false">集群行为</button></div>
-        <video id="dynamics-video" class="dynamics-video" width="480" height="480" controls loop playsinline preload="none" poster="assets/img/spiral-wave-poster.png" aria-label="螺旋波模型动画"><source src="assets/media/spiral-wave.mp4" type="video/mp4">你的浏览器不支持视频，可<a href="assets/media/spiral-wave.mp4">打开螺旋波动画</a>。</video>
-        <figcaption><span class="dynamics-equation" lang="en">u(r, θ, t) = sin(2πkr + θ − ωt)</span><span class="dynamics-note">解析相位场示意，观察螺旋结构随时间旋转。</span></figcaption>
-        <noscript><p class="dynamics-fallback-links"><a href="assets/media/turing-pattern.mp4">观看图灵斑图</a><a href="assets/media/collective-motion.mp4">观看集群行为</a></p></noscript>
-      </figure>
+    </section>
+
+    <section class="experiments-section shell" id="experiments" aria-labelledby="experiments-title">
+      <div class="section-heading"><div><h2 id="experiments-title">数学实验</h2><p>调一调参数，观察螺旋结构、扩散斑图与集体运动。</p></div></div>
+      <div class="dynamics-tabs" role="group" aria-label="选择数学模型" hidden><button type="button" data-dynamics="spiral" aria-pressed="true">螺旋波</button><button type="button" data-dynamics="turing" aria-pressed="false">图灵斑图</button><button type="button" data-dynamics="collective" aria-pressed="false">集群行为</button></div>
+      <div class="lab-layout" id="dynamics-lab">
+        <figure class="dynamics-figure">
+          <div class="plot-frame">
+            <canvas id="dynamics-canvas" width="480" height="480" role="img" aria-label="螺旋波相位场，可点击移动波心" aria-describedby="plot-hint" tabindex="0" hidden></canvas>
+            <img id="dynamics-fallback" src="assets/img/spiral-wave-poster.png" width="480" height="480" alt="螺旋波相位场的静态示意">
+            <p id="plot-loading" class="plot-loading" hidden>正在计算斑图…</p>
+          </div>
+          <figcaption class="plot-caption"><span id="plot-scale-label">相位场 u</span><span class="color-scale" aria-hidden="true"></span><span id="plot-scale-range">−1 至 1</span><span id="model-metric">解析相位场</span></figcaption>
+        </figure>
+        <div class="lab-controls">
+          <h3 id="model-title">螺旋波的相位结构</h3>
+          <p id="model-description">波纹密度决定螺旋的疏密，臂数改变螺旋结构。点击图形可以移动波心。</p>
+          <div class="parameter-controls" hidden>
+            <fieldset data-model-controls="spiral"><legend class="sr-only">螺旋波参数</legend>
+              <div class="parameter"><div><label for="spiral-density">波纹密度 k</label><output for="spiral-density" id="spiral-density-value">6.0</output></div><input id="spiral-density" data-param="density" type="range" min="2" max="12" step="0.5" value="6"></div>
+              <div class="parameter"><div><label for="spiral-arms">螺旋臂数 m</label><output for="spiral-arms" id="spiral-arms-value">1</output></div><input id="spiral-arms" data-param="arms" type="range" min="1" max="4" step="1" value="1"></div>
+              <div class="parameter"><div><label for="spiral-speed">旋转速度 ω</label><output for="spiral-speed" id="spiral-speed-value">1.0 rad/s</output></div><input id="spiral-speed" data-param="speed" type="range" min="0.2" max="2" step="0.1" value="1"></div>
+            </fieldset>
+            <fieldset data-model-controls="turing" hidden><legend class="sr-only">图灵斑图参数</legend>
+              <div class="parameter"><div><label for="turing-diffusion">抑制物扩散 Dᵥ</label><output for="turing-diffusion" id="turing-diffusion-value">3.2</output></div><input id="turing-diffusion" data-param="diffusion" type="range" min="0.8" max="4.8" step="0.2" value="3.2" aria-describedby="turing-parameter-note"></div>
+              <div class="parameter"><div><label for="turing-perturbation">初始扰动幅度</label><output for="turing-perturbation" id="turing-perturbation-value">0.015</output></div><input id="turing-perturbation" data-param="perturbation" type="range" min="0.005" max="0.06" step="0.005" value="0.015"></div>
+              <p class="parameter-note" id="turing-parameter-note">把 Dᵥ 降到 1.0，比较斑点是否还能形成。调参会重新计算演化后的斑图。</p>
+            </fieldset>
+            <fieldset data-model-controls="collective" hidden><legend class="sr-only">集群行为参数</legend>
+              <div class="parameter"><div><label for="collective-noise">方向噪声 η</label><output for="collective-noise" id="collective-noise-value">0.3 rad</output></div><input id="collective-noise" data-param="noise" type="range" min="0" max="6" step="0.1" value="0.3" aria-describedby="collective-parameter-note"></div>
+              <div class="parameter"><div><label for="collective-radius">邻域半径 R</label><output for="collective-radius" id="collective-radius-value">0.14</output></div><input id="collective-radius" data-param="radius" type="range" min="0.04" max="0.3" step="0.01" value="0.14"></div>
+              <div class="parameter"><div><label for="collective-count">粒子数 N</label><output for="collective-count" id="collective-count-value">180</output></div><input id="collective-count" data-param="count" type="range" min="60" max="300" step="20" value="180"></div>
+              <p class="parameter-note" id="collective-parameter-note">增大噪声，会打乱局部对齐。方向一致度越接近 1，粒子越趋于同向运动。</p>
+            </fieldset>
+            <div class="simulation-actions"><button type="button" id="model-play" aria-pressed="false">开始演化</button><button type="button" id="model-step">前进一步</button><button type="button" id="model-reset">恢复初始</button></div>
+            <p class="simulation-status" id="model-status" role="status" aria-live="polite">已暂停，可以调参或开始演化。</p>
+          </div>
+          <p class="plot-hint" id="plot-hint">点击或触摸图形移动波心；聚焦图形后，也可使用方向键。</p>
+          <details class="model-details"><summary>模型与说明</summary><p id="model-equation" class="dynamics-equation" lang="en">u(r, θ, t) = sin(2πkr + mθ − ωt)</p><p id="model-note">螺旋波使用解析相位场展示几何结构；这里的模型演示不代表论文中的数值结果。</p></details>
+          <a id="model-video-link" class="text-link" href="assets/media/spiral-wave.mp4">观看螺旋波视频</a>
+          <noscript><p class="parameter-note">启用 JavaScript 后可调参。也可直接<a href="assets/media/turing-pattern.mp4">观看图灵斑图视频</a>或<a href="assets/media/collective-motion.mp4">集群行为视频</a>。</p></noscript>
+        </div>
+      </div>
     </section>
 
     <section class="practice-section section shell" id="practice" aria-labelledby="practice-title">
